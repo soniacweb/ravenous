@@ -1,7 +1,7 @@
 # ravenous
 ### Part of the Codeacademy pro final project
 
-# Objective
+# Objectives and Overview
 
  Over the next couple of weeks, you’ll build a website called “Ravenous”, a Yelp-like clone.
 In total, there will be four parts to this project:
@@ -30,3 +30,19 @@ In total, there will be four parts to this project:
 - JavaScript
 - CSS
 - Yelp API
+
+### Adding a CCS reset 
+
+By default, create-react-app will generate a sample application. I needed to add a reset.css file to ensure the app is styled the same in every browser.
+
+Using the command line I createed a new file called reset.css in the public/ directory and linked reset.css in the index.html file that’s also located in the public/ directory.
+
+### Creating Business.js
+Ravenous will be composed of four different components interacting with each other:
+
+```<Business />
+<BusinessList />
+<SearchBar />
+<App /> (created by default with create-react-app)
+```
+

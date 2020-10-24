@@ -1,5 +1,7 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from '../../logo.svg';
+import '../../App.css';
+
+// import Business from '../Business/Business';
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
         >
           Hello CodeAcademy
         </a>
+        {/* <Business /> */}
       </header>
     </div>
   );
