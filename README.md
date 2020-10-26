@@ -46,3 +46,60 @@ Ravenous will be composed of four different components interacting with each oth
 <App /> (created by default with create-react-app)
 ```
 
+### Search Bar
+The search bar should allow users to search businesses by:
+
+- Best Match
+- Highest Rated
+- Most Reviewed
+
+To achieve this, I needed to create an object with keys and values that conform to what the API expects to receive (as shown in the documentation). 
+
+### Setting a BusinessList Prop
+
+In app.js, I added a businesses property to the <BusinessList /> component inside of the render() method, and set the property equal to the businesses array. 
+
+``` <BusinessList businesses={businesses} /> ```
+
+When the businesses prop is set in the BusinessList component, there should be some functionality behind it. Specifically, it should iterate through the businesses array I created.
+
+Inside of the BusinessList div in BusinessList.js, I accessed the businesses prop and called the .map() method on it.
+
+Inside of the map() method, I passed a callback function with one parameter called business.
+
+```
+class BusinessList extends React.Component {
+  render() {
+    return (
+      <div className="BusinessList">
+
+{
+this.props.businesses.map(business => 
+  <Business business={business} />
+)
+};
+
+</div>
+    )
+  }
+}
+```
+
+### Modifying Business.js using Props
+
+```<div className="Business">
+      <div className="image-container">
+        <img src={this.props.business.imageSrc} alt=''/>
+      </div>
+      <h2>{this.props.business.name}</h2>
+      <div className="Business-information">
+        <div className="Business-address">
+          <p>{this.props.business.address}</p>
+          <p>{this.props.business.state}</p>
+          <p>{this.props.business.zipCode}</p>
+        </div>
+        <div className="Business-reviews">
+          <h3>ITALIAN</h3>
+          <h3 className="rating">{this.props.business.rating}</h3>
+          <p>{this.props.business.reviewCount} reviews</p>
+```
