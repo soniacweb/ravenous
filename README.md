@@ -103,3 +103,114 @@ this.props.businesses.map(business =>
           <h3 className="rating">{this.props.business.rating}</h3>
           <p>{this.props.business.reviewCount} reviews</p>
 ```
+
+### Setting the Search Bar's State
+
+So far, I have passed information from parent components (App) to child components (BusinessList, Business). I needed to complete the third installment for this project objective which is to set state.
+
+Certain components will need to handle changes in their state. For example, the sorting options in the search bar will change (and I’ll need to know their state when communicating with the Yelp API). Likewise for the two input elements `Search Businesses` and `Where`.
+
+Objective: the search bar options will reflect changes in their state when they are clicked, and the “Let’s Go” button will respond to click events.
+
+I created a method which took in an argument (user input) to compare the current state of sorting with. I used a ternary operator to create simply comparison logic- if the user imput matched the state of sort, the CSS class would be active. 
+
+``` //getSortByClass() returns the current CSS class for a sorting option. 
+  getSortByClass(sortByOption) {
+  return this.state.sortBy === sortByOption ? 'active': '';
+  }
+```
+
+### A method that sets the state of a sorting option-  proving useful when communicating with the Yelp API in the future.
+
+Inside of `.handleSortByChange()`, I updates the state by calling `.setState()`. I passed in an object to `setState()`. The object sets sortBy to the value of the method’s argument.
+
+```
+handleSortByChange(sortByOption) {
+    this.setState({ sortBy: sortByOption})   
+  }
+
+```
+
+### Set the Class Name of a Sort Option 
+
+I added a className attribute to the <li> element in the `.renderSortByOptions()` method and set it equal to the return value of the getSortByClass() method by passing in sortByOptionValue as the argument.
+
+This will conditionally style each sort by option, displaying to the user which sorting option is currently selected.
+
+```
+  renderSortByOptions() {
+    ...
+    return <li key={sortByOptionValue} className={this.getSortByClass(sortByOptionValue)}>{sortByOption}</li>
+    ...
+
+```
+### Handle a Sorting Option Change (On Click)
+
+Objective: update the state of a sorting option when it is clicked.
+
+I added an onClick attribute to the <li> element and set it equal to `handleSortByChange.bind()`. Passing in two arguments to .bind(): this and sortByOptionValue.
+
+```
+renderSortByOptions() {
+    ...
+    return <li 
+    onClick={this.handleSortByChange.bind(this, sortByOptionValue)}></li>
+    });
+    }
+
+```
+
+This will allow us to both bind to the current value of this (as we usually do in the constructor()) but also bind the current sortByOptionValue as the first argument to the method call, ensuring the method is called with the appropriate value when clicked.
+
+### Handle a Term or Location Change (input fields)
+
+Added two new methods:
+
+`handleTermChange(e)`
+`handleLocationChange(e)`
+
+Both related to events being triggered, therefore both accepted events as an argument. Inside of each method, I updateed the state using setState() and passed in an empty object into each call of setState():
+
+`this.setState({term: e.target.value})`
+
+### Handle a Term or Location Change (onChange)
+
+Using the methods: 
+
+
+Inside of the return statement of the component’s render() method, add onChange attributes to each `<input>` element:
+
+Set the first attribute to handle term changes.
+Set the second attribute to handle location changes.
+
+```
+<input placeholder="Search Businesses" onChange={this.handleTermChange} />
+<input placeholder="Where?" onChange={this.handleLocationChange} />
+
+```
+### searchYelp() in the App Component
+
+In App.js, I added a method called searchYelp() in the class declaration of the App component.
+
+`searchYelp()` accepts three parameters: term, location, and sortBy. These parameters represent the three pieces of information we’ll send to the Yelp API.
+
+In SearchBar.js I added: `handleSearch()` which accepts an event parameter.
+
+Inside of .handleSearch(), i called the passed down .searchYelp() method (located on props), and passed in the current state values of term, location, and sortBy as arguments.
+
+`this.props.searchYelp(this.state.term, this.state.location, this.state.sortBy)`
+
+The preventDefault() method was used to prevent the default action of clicking a link from triggering at the end of the method.
+
+### Handle a Search (onClick)
+
+
+Added visual feedback for the sorting options at the top of the search bar
+Set the state of sorting options and input elements
+Simulated a search query with the “Let’s Go” button
+
+```
+  <div className="SearchBar-submit" onClick={this.handleSearch}>
+      <a>Let's Go</a>
+    </div>
+```
