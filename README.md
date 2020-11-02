@@ -214,3 +214,50 @@ Simulated a search query with the “Let’s Go” button
       <a>Let's Go</a>
     </div>
 ```
+
+### Retrieve Yelp API v3 Credentials and Storing in Yelp.js
+
+## Using the fetch() browser API to make our requests.
+
+As fetch() is a browser API, older browsers may not support it. To increase the accessibilty of Ravenous to a wider audience of users, I needed to add a fetch() polyfill to support older browsers.
+I installed `install the whatwg-fetch` polyfill and added it to your package.json file.
+
+Create an empty object called Yelp. This object will store the functionality needed to interact with the Yelp API. Create a method called search. This is the method we’ll use to retrieve search results from the Yelp API.
+
+Pass in term, location, and sortBy parameters to the method.
+
+Inside of the method, begin the method with a return which will return a promise that will ultimately resolve to our list of businesses. After return begin your chain of calls by calling fetch().
+
+```
+const Yelp = {
+  search(term, location, sortBy) {
+    return fetch()
+  }
+}
+```
+
+To retrieve businesses, you’ll have to hit the /businesses endpoint of the Yelp API. I pass in the following path as the first argument to fetch():
+
+`https://api.yelp.com/v3/businesses/search?term=TERM&location=LOCATION&sort_by=SORT_BY`
+
+Use interpolation to replace TERM, LOCATION, and SORT_BY with the correct variables in the path above
+
+We can bypass this CORS restriction with an API called CORS Anywhere. CORS Anywhere will take requests sent to its API endpoint, make them for the requesting app with the proper CORS permissions, and then return the response back to the requesting app.
+
+Prepend the URL path you passed to the first argument in fetch().
+
+I will needed to convert the returned response to JSON to then be able to effectively utilize the list of businesses from the fetch request.
+
+I chained a call using `then()` to the end of the fetch() method and passed in a callback function. The callback function, taking in `response` as its only parameter, and returning a call to .json() on `response`.
+
+I chained another `.then()` call after the previous to retrieve the list of businesses from the converted JSON response and passed in a callback function that takes one parameter called jsonResponse.
+Inside of that callback, I added an if statement that checks to see if jsonResponse has a businesses key (a valid response from the Yelp API).
+
+If it doesn’t, I added a `catch` method to log any potential errors as I don’t want the site to crash trying to render a list of businesses that don’t exist.
+
+## Mapping through the response 
+
+
+If this key does exists in the JSON response, we should return an array that has all of the business’ properties we’ll need (the ones we previously hard coded, like name, address, city, and more).
+
+In the if statement, iterate through `jsonResponse.businesses` using map().
