@@ -260,4 +260,56 @@ If it doesn’t, I added a `catch` method to log any potential errors as I don�
 
 If this key does exists in the JSON response, we should return an array that has all of the business’ properties we’ll need (the ones we previously hard coded, like name, address, city, and more).
 
-In the if statement, iterate through `jsonResponse.businesses` using map().
+In the if statement, I iterated through `jsonResponse.businesses` using map(). Inside of the callback function, return an object. This object will be lengthy and should include all of the attributes needed to display a business in Ravenous.
+
+It will also be up to you to access the jsonReponse object returned by the Yelp API to extract the specific attributes needed. Most of these attributes reside inside at the top-levl of business, but some do not. You’ll have to do some digging to see exactly where they reside in the response object.
+
+## Add a key to <Business />
+
+Now that we have real data, we can modify the Business component that BusinessList renders. Every list item rendered by a React component needs to have a unique key, we were unable to hard code this, but we can now use the unique ID of each business as the key.
+
+```
+{
+this.props.businesses.map((business, i) => 
+  <Business key={i} business={business} />
+)
+};
+```
+
+## Adding an App constructor to App.js
+
+Above the searchYelp() method, add a constructor.
+
+Inside of the constructor I initialised the value of state to an object with a key of businesses set to an empty array. I binded the searchYelp() method to the current value of this.
+
+```
+ this.state = {
+        businesses: []
+      }
+      this.searchYelp.bind(this) 
+  }
+
+```
+
+Inside of searchYelp(), call Yelp.search(). Pass the same three arguments supplied to .searchYelp() in your Yelp.search() call.
+
+Once I retrieve the list of businesses, I needed to update the state.
+
+Pass it a callback function that takes one parameter called businesses.
+
+Inside of the callback function, update the state using setState().
+
+Pass in an object to setState().
+
+The object should have a key of businesses with a value of businesses (the returned array of businesses).
+
+```
+...
+  searchYelp(term, location, sortBy) {
+    Yelp.search(term, location, sortBy)
+    .then(businesses => this.setState({
+      businesses: businesses
+    }))
+...
+
+```
